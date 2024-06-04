@@ -1,45 +1,47 @@
 package org.example.service;
 
-import org.example.dao.PersonDaoImpl;
+import org.example.dao.PersonDao;
 import org.example.models.Person;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
 public class PersonServiceImpl implements PersonService {
-    private final PersonDaoImpl personDaoImpl;
+    private final PersonDao personDao;
 
-    public PersonServiceImpl(PersonDaoImpl personDaoImpl) {
-        this.personDaoImpl = personDaoImpl;
+    public PersonServiceImpl(PersonDao personDao) {
+        this.personDao = personDao;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<Person> index() {
-        return personDaoImpl.index();
+        return personDao.index();
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Person show(int id) {
-        return personDaoImpl.show(id);
+        return personDao.show(id);
     }
 
+    @Transactional
     @Override
     public void save(Person person) {
-        personDaoImpl.save(person);
+        personDao.save(person);
     }
 
+    @Transactional
     @Override
     public void update(int id, Person updatedPerson) {
-        Person personToBeUpdated = personDaoImpl.show(id);
-        personToBeUpdated.setName(updatedPerson.getName());
-        personToBeUpdated.setAge(updatedPerson.getAge());
-        personDaoImpl.save(personToBeUpdated);
-
+        updatedPerson.setId(id);
+        personDao.update(id, updatedPerson);
     }
-
+    @Transactional
     @Override
     public void deleteUser(int id) {
-        personDaoImpl.deleteUser(id);
+        personDao.deleteUser(id);
     }
 }

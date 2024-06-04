@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class PersonDaoImpl implements PersonDao{
+public class PersonDaoImpl implements PersonDao {
     @PersistenceContext
     private EntityManager entityManager;
 
